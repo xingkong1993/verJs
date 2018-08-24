@@ -1,4 +1,4 @@
- #使用须知：
+ # 使用须知：
  1. verification是一款开源的用于表单验证插件，当前版本：V1.0.1;
  2. verification提供免费下载开发版，下载链接请见插件下载板块
  3. 使用verification前请先将Verification.css变量修改为项目目录,插件提供默认样式和icon是通过css变量中的路径加载相关样式文件
