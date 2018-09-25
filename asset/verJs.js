@@ -20,18 +20,6 @@ window.VerJs = (function () {
             email: "请输入规则的电子邮箱",
             idcard: "请输入有效的身份证号码"
         };
-        this.func = {
-            required: this.data_required,
-            min: this.data_min_value,
-            max: this.data_max_value,
-            minlength: this.data_min_length,
-            maxlength: this.data_max_length,
-            rule: this.data_rule,
-            equal: this.data_equal,
-            mobile: this.data_mobile,
-            email: this.data_email,
-            idcard: this.data_id_card
-        };
         this.change;
         this.error = function (errorMessage, target) {
             this.clear_error(target);
@@ -39,10 +27,10 @@ window.VerJs = (function () {
             var errorTag = document.createElement("span");
             errorTag.className = "ver-errors";
             var iconCarets = document.createElement("i");
-            iconCarets.className = "iconfont ver-icon-carets ver-error-caret";
+            iconCarets.className = "verJsFont ver-icon-carets ver-error-caret";
             errorTag.appendChild(iconCarets);
             var iconInfo = document.createElement("i");
-            iconInfo.className = "iconfont icon-info-o";
+            iconInfo.className = "verJsFont icon-info-o";
             errorTag.appendChild(iconInfo);
             var span = document.createElement("span");
             span.innerText = errorMessage;
@@ -61,7 +49,7 @@ window.VerJs = (function () {
             var css = document.createElement("link"),
                 icon = document.createElement("link");
             css.href = "asset/need/common.css?v=1.0.2&$_=" + Math.random();
-            icon.href = "asset/need/iconfont.css?v=1.0.2&$_=" + Math.random();
+            icon.href = "asset/need/vericon.css?v=1.0.2&$_=" + Math.random();
             css.rel = icon.rel = "stylesheet";
             css.type = icon.type = "text/css";
             var link = document.getElementsByTagName("head")[0];
@@ -156,20 +144,135 @@ window.VerJs = (function () {
         },
         verification: function () {
             var _self = this;
-            for (var i in this.func) {
+            for (var i in this.messages) {
                 var names = this.form.querySelectorAll("[data-" + i + "]");
                 if (names.length > 0) {
                     names.forEach(function (items) {
-                        _self.func[i](items, _self);
+                        _self.query(items);
                     })
                 }
             }
         },
         query: function (objects) {
-            for (var i in this.func) {
-                if (objects.getAttribute("data-" + i)) {
-                    this.func[i](objects, this);
+            var data = {
+                required: required,
+                min: minOrMax,
+                max: minOrMax,
+                minlength: lengths,
+                maxlength: lengths,
+                rule: rules,
+                equal: equal,
+                mobile: mobile,
+                email: email,
+                idcard: IdCard
+            };
+            var _self = this;
+            for (var item in data) {
+                if (objects.getAttribute("data-" + item)) {
+                    data[item]();
                 }
+            }
+
+            function required() {
+                var value = objects.value,
+                    errorMessage = objects.getAttribute("data-required");
+                if (value == '' || value == null) {
+                    _self.error(errorMessage, objects);
+                    return false;
+                }
+                return true;
+            }
+
+            function minOrMax() {
+                var value = (objects.value),
+                    min = parseInt(objects.getAttribute("data-min")),
+                    max = parseInt(objects.getAttribute("data-max"));
+                value = parseInt(value);
+                if (value) {
+                    if (isNaN(value) || min > value) {
+                        _self.error("最小值为：" + min, objects);
+                        return false;
+                    } else if (!isNaN(max) && max < value) {
+                        _self.error("最大值为：" + max, objects);
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            function lengths() {
+                var value = objects.value.length,
+                    max = parseInt(objects.getAttribute("data-maxlength")),
+                    min = parseInt(objects.getAttribute("data-minlength"));
+                if (value < min) {
+                    _self.error("最少输入" + min + "个字符", objects);
+                    return false;
+                }
+                else if (value > max) {
+                    _self.error("最多输入" + max + "个字符", objects);
+                    return false;
+                }
+                return true;
+            }
+
+            function rules() {
+                var value = objects.value,
+                    rule = objects.getAttribute("data-rule"),
+                    errorMessage = objects.getAttribute("data-rule-message");
+                if (!errorMessage) errorMessage = "格式错误!";
+                rule = new RegExp(rule);
+                if (value) {
+                    if (!rule.test(value)) {
+                        _self.error(errorMessage, objects);
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            function equal() {
+                var value = objects.value,
+                    equal = document.querySelector(objects.getAttribute("data-equal")).value,
+                    errorMessage = "两次输入内容不一致";
+                if (value != equal) {
+                    _self.error(errorMessage, objects);
+                    return false;
+                }
+                return true;
+            }
+
+            function mobile() {
+                var value = objects.value,
+                    rule_tel = /^(0\d{2,3}\d{7,8}|0\d{2,3}-)\d{7,8}$/,
+                    rule_phone = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+                    errorMessage = objects.getAttribute("data-mobile");
+                if (value && !rule_phone.test(value) && !rule_tel.test(value)) {
+                    _self.error(errorMessage, objects);
+                    return false;
+                }
+                return true;
+            }
+
+            function email() {
+                var value = objects.value,
+                    rule_email = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g,
+                    errorMessage = objects.getAttribute("data-email");
+                if (value && !rule_email.test(value)) {
+                    _self.error(errorMessage, objects);
+                    return false;
+                }
+                return true;
+            }
+
+            function IdCard() {
+                var value = objects.value,
+                    rule_email = /^([1-9]\d{5}[1]\d{3}(0[1-9]|1[0-2])(0[1-9]|[1-2]\d|3[0-1])\d{3}[0-9xX]|[1-9]\d{5}\d{2}(0[1-9]|1[0-2])(0[1-9]|[1-2]\d|3[0-1])\d{3})$/,
+                    errorMessage = objects.getAttribute("data-idcard");
+                if (value && !rule_email.test(value)) {
+                    _self.error(errorMessage, objects);
+                    return false;
+                }
+                return true;
             }
         },
         clear_error: function (objects) {
@@ -179,112 +282,6 @@ window.VerJs = (function () {
                 parent.removeChild(errorTag);
             }
             objects.classList.remove("ver-error-input");
-        },
-        data_required: function (objects, _self) {
-            var value = objects.value,
-                errorMessage = objects.getAttribute("data-required");
-            if (value == '' || value == null) {
-                _self.error(errorMessage, objects);
-                return false;
-            }
-            return true;
-        },
-        data_min_value: function (objects, _self) {
-            var value = (objects.value),
-                min = parseInt(objects.getAttribute("data-min"));
-            if (value) {
-                value == parseInt(value);
-                if (isNaN(value) || min > value) {
-                    _self.error("最小值为：" + min, objects);
-                    return false;
-                }
-            }
-            return true;
-        },
-        data_max_value: function (objects, _self) {
-            var value = (objects.value),
-                min = parseInt(objects.getAttribute("data-max"));
-            if (value) {
-                value = parseInt(value);
-                if (isNaN(value) || min < value) {
-                    _self.error("最大值为：" + min, objects);
-                    return false;
-                }
-            }
-            return true;
-        },
-        data_min_length: function (objects, _self) {
-            var value = objects.value.length,
-                min = parseInt(objects.getAttribute("data-minlength"));
-            if (value < min) {
-                _self.error("最少输入" + min + "个字符", objects);
-                return false;
-            }
-            return true;
-        },
-        data_max_length: function (objects, _self) {
-            var value = objects.value.length,
-                min = parseInt(objects.getAttribute("data-maxlength"));
-            if (value > min) {
-                _self.error("最多输入" + min + "个字符", objects);
-                return false;
-            }
-            return true;
-        },
-        data_rule: function (objects, _self) {
-            var value = objects.value,
-                rule = objects.getAttribute("data-rule"),
-                errorMessage = objects.getAttribute("data-rule-message");
-            if (!errorMessage) errorMessage = "格式错误!";
-            rule = new RegExp(rule);
-            if (value) {
-                if (!rule.test(value)) {
-                    _self.error(errorMessage, objects);
-                    return false;
-                }
-            }
-            return true;
-        },
-        data_equal: function (objects, _self) {
-            var value = objects.value,
-                equal = document.querySelector(objects.getAttribute("data-equal")).value,
-                errorMessage = "两次输入内容不一致";
-            if (value != equal) {
-                _self.error(errorMessage, objects);
-                return false;
-            }
-            return true;
-        },
-        data_mobile: function (object, _self) {
-            var value = object.value,
-                rule_tel = /^(0\d{2,3}\d{7,8}|0\d{2,3}-)\d{7,8}$/,
-                rule_phone = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
-                errorMessage = object.getAttribute("data-mobile");
-            if (value && !rule_phone.test(value) && !rule_tel.test(value)) {
-                _self.error(errorMessage, object);
-                return false;
-            }
-            return true;
-        },
-        data_email: function (object, _self) {
-            var value = object.value,
-                rule_email = /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g,
-                errorMessage = object.getAttribute("data-email");
-            if (value && !rule_email.test(value)) {
-                _self.error(errorMessage, object);
-                return false;
-            }
-            return true;
-        },
-        data_id_card: function (object, _self) {
-            var value = object.value,
-                rule_email = /^([1-9]\d{5}[1]\d{3}(0[1-9]|1[0-2])(0[1-9]|[1-2]\d|3[0-1])\d{3}[0-9xX]|[1-9]\d{5}\d{2}(0[1-9]|1[0-2])(0[1-9]|[1-2]\d|3[0-1])\d{3})$/,
-                errorMessage = object.getAttribute("data-idcard");
-            if (value && !rule_email.test(value)) {
-                _self.error(errorMessage, object);
-                return false;
-            }
-            return true;
         },
         ajax: function () {
             var _self = this;
