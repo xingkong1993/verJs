@@ -76,6 +76,7 @@
  8. 手机/电话号码验证【data-mobile="true"】
  9. 邮箱验证【data-email="true"】
  10. 身份证号码验证【data-idcard="true"】
+ 11. 表单提交方式 【data-form='ajax'】
  # 四、插件下载
  [verJs下载中心](https://xincheng-blog.cn/download/verJs.rar)
  # 版权信息
