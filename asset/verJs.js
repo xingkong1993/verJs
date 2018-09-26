@@ -21,6 +21,7 @@ window.VerJs = (function () {
             idcard: "请输入有效的身份证号码"
         };
         this.change;
+        this.linkName = "asset/need";
         this.error = function (errorMessage, target) {
             this.clear_error(target);
             target.classList.add("ver-error-input");
@@ -45,11 +46,11 @@ window.VerJs = (function () {
                 parent.insertBefore(newElement, targentElement.nextSibling);
             }
         };
-        this.styles = function () {
+        this.styles = function (links) {
             var css = document.createElement("link"),
                 icon = document.createElement("link");
-            css.href = "asset/need/common.css?v=1.0.2&$_=" + Math.random();
-            icon.href = "asset/need/vericon.css?v=1.0.2&$_=" + Math.random();
+            css.href = links + "/common.css?v=1.0.2&$_=" + Math.random();
+            icon.href = links + "/vericon.css?v=1.0.2&$_=" + Math.random();
             css.rel = icon.rel = "stylesheet";
             css.type = icon.type = "text/css";
             var link = document.getElementsByTagName("head")[0];
@@ -58,7 +59,7 @@ window.VerJs = (function () {
         };
         this.success = function (data) {
             alert("提交成功！")
-        }
+        };
         this.fail = function (data) {
             alert("提交失败！");
         }
@@ -66,7 +67,11 @@ window.VerJs = (function () {
     ver.prototype = {
         init: function (params) {
             var _self = this;
-            this.styles();
+            var links = this.linkName;
+            if (params.linkName) {
+                links = params.linkName;
+            }
+            this.styles(links);
             this.form = document.querySelector(params.form);
             if (!this.form) this.form = document.querySelector("form");
             this.change = params.change ? params.change : "default";

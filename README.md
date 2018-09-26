@@ -12,6 +12,8 @@
    >
    >fail : 数据请求失败后的回调函数（验证通过并未返回请求信息）
    >
+   >linkName : 样式加载库，默认值为 asset/need,VerJs提供默认的样式加载和icon图标，也可自定义文件路径中（在改文件下需要有common.css和vericon.css）
+   
         eg:
         var form = new VerJs();
         form.init({
