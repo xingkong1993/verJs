@@ -74,7 +74,7 @@ window.VerJs = (function () {
         };
         this.fail = function (data) {
             console.log(data);
-        }
+        };
         this.signBase = "md5";
         this.format = "json";
     };
@@ -369,7 +369,7 @@ window.VerJs = (function () {
             if (iconcolor) {
                 var parent = (objects.offsetParent);
                 var iconcirle = parent.querySelector("iconcirle");
-                iconcirle.classList.remove("ver-error-inputs")
+                iconcirle.classList.remove("ver-error-inputs");
             }
         },
         ajax: function () {
