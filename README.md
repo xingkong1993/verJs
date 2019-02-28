@@ -11,59 +11,6 @@
    >success : 数据请求成功后的回调函数（验证通过并成功返回请求信息）
    >
    >fail : 数据请求失败后的回调函数（验证通过并未返回请求信息）
-   >
-   >linkName : 样式加载库，默认值为 asset/need,VerJs提供默认的样式加载和icon图标，也可自定义文件路径中（在改文件下需要有common.css和vericon.css）
-   
-        eg:
-        var form = new VerJs();
-        form.init({
-            form:"form",//验证的表单
-            //验证数据集，也可以在标记中以data-XXX的形式加入验证
-            data:{
-                req:{
-                    required:true
-                },
-                min_number:{
-                    min:2
-                },
-                max_number:{
-                    max:12
-                },
-                eq:{
-                    equal:"#eq"
-                },
-                min_length:{
-                    minlength:6
-                },
-                max_length:{
-                    maxlength:6
-                },
-                rule:{
-                    rule:"^\\d{6}$",
-                    required:true
-                },
-                mobile:{
-                    mobile:true
-                }
-            },
-            //验证提示消息
-            message:{
-                req:{
-                    required:"这是一条必填数据"
-                },
-                rule:{
-                    rule:"请输入六位数字"
-                }
-            },
-            success:function (data) {
-                //ajax提交成功后的回调函数
-                alert("hahahha");
-            },
-            fail:function (data) {
-                //ajax提交失败后的回调函数
-                alert("ieieiiruwei");
-            }
-        });
    
  # 三、属性说明
  1. 必填参数【data-required="当前参数不能为空"】
@@ -79,6 +26,19 @@
  11. 表单提交方式 【data-form='ajax'】
  # 四、插件下载
  [verJs下载中心](https://xincheng-blog.cn/download/verJs.rar)
+ 
+ # 五、文件目录结构
+ ~~~
+ www 网站部署目录
+ |——verJs  verjs文件夹
+ |————need  样式文件夹
+ |——————common.css  verjs基础样式
+ |——————vericon.css icon样式
+ |————verJs.js  verJS文件
+ |————verApi.js verapi接口调用文件
+ |————verSelectList.js  select下拉选框
+ |————verTabList.js 复选
+ ~~~
  # 版权信息
  > Copyright © 2018 by [搬砖的小白](https://www.yum-blog.cn)  
  > All rights reserved。
