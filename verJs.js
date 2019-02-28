@@ -70,10 +70,10 @@ window.VerJs = (function () {
             link.appendChild(icon);
         };
         this.success = function (data) {
-            alert("提交成功！")
+            console.log(data);
         };
         this.fail = function (data) {
-            alert("提交失败！");
+            console.log(data);
         }
         this.signBase = "md5";
         this.format = "json";
