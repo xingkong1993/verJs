@@ -12,8 +12,7 @@ VERJS
    >
    >success : 数据请求成功后的回调函数（验证通过并成功返回请求信息）
    >
-   >fail : 数据请求失败后的回调函数（验证通过并未返回请求信息）
-   
+   >fail : 数据请求失败后的回调函数（验证通过并未返回请求信息）   
  # 三、属性说明
  1. 必填参数【data-required="当前参数不能为空"】
  2. 最小参数【data-min="1"】
@@ -25,11 +24,8 @@ VERJS
  8. 手机/电话号码验证【data-mobile="true"】
  9. 邮箱验证【data-email="true"】
  10. 身份证号码验证【data-idcard="true"】
- 11. 表单提交方式 【data-form='ajax'】
- # 四、插件下载
- [verJs下载中心](https://xincheng-blog.cn/download/verJs.rar)
- 
- # 五、文件目录结构
+ 11. 表单提交方式 【data-form='ajax'】 
+ # 四、文件目录结构
  ~~~
  www 网站部署目录
  |——verJs  verjs文件夹
