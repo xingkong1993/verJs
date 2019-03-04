@@ -38,5 +38,5 @@ VERJS
  |————verTabList.js 复选
  ~~~
  # 版权信息
- > Copyright © 2018 by [搬砖的小白](https://www.yum-blog.cn)  
+ > Copyright © 2018 by [搬砖的小白](https://www.xincheng-blog.cn)  
  > All rights reserved。
