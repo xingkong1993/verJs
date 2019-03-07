@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta content="email=no" name="format-detection"/>
+    <meta content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)" name="viewport"/>
+    <title>form表单验证</title>
+    <style>
+        fieldset{
+            border: 0;
+        }
+        dl dt,dl dd{
+            display: inline-block;
+            vertical-align: top;
+        }
+        input{
+            height: 30px;
+            line-height: 30px;
+            width: 220px;
+            outline: none;
+            padding: 0 10px;
+        }
+        dl{
+            margin-bottom: 15px;
+        }
+        button{
+            width: 120px;
+            height: 35px;
+            border: 0;
+            background: #0a8cd2;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<form action="#" id="form">
+    <fieldset>
+        <div>form表单验证</div>
+        <dl>
+            <dt>必填</dt>
+            <dd>
+                <input type="text" data-required="参数不能为空" id="eq">
+            </dd>
+        </dl>
+        <dl>
+            <dt>相等</dt>
+            <dd>
+                <input type="text" data-equal="#eq" data-required="参数不能为空">
+            </dd>
+        </dl>
+        <dl>
+            <dt>最小/大值</dt>
+            <dd>
+                <input type="number" data-min="7" data-max="15">
+            </dd>
+        </dl>
+        <dl>
+            <dt>最小/大长度</dt>
+            <dd>
+                <input type="text" data-minlength="5" data-maxlength="15">
+            </dd>
+        </dl>
+        <dl>
+            <dt>手机</dt>
+            <dd>
+                <input type="text" data-mobile="true">
+            </dd>
+        </dl>
+        <dl>
+            <dt>邮箱</dt>
+            <dd>
+                <input type="text" data-email="true">
+            </dd>
+        </dl>
+        <dl>
+            <dt>身份证</dt>
+            <dd>
+                <input type="text" data-idcard="true">
+            </dd>
+        </dl>
+        <dl>
+            <dt>气泡</dt>
+            <dd>
+                <input type="text" data-required="我是必填参数哦" data-block="true">
+            </dd>
+        </dl>
+
+        <button type="submit">提交</button>
+    </fieldset>
+</form>
+</body>
+<script src="../js/verJs.js"></script>
+<script src="asset/js/jquery.min.js"></script>
+<script>
+    function max_width() {
+        var max = 0;
+        $("dt").each(function () {
+            max = Math.max(max,$(this).width());
+        });
+        $("dt").width(max);
+    }
+    max_width();
+    var form = new VerJs();
+    form.init({
+        form:"#form"
+    });
+</script>
+</html>
