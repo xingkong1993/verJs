@@ -91,6 +91,7 @@ window.verSelector = (function () {
         } else {
             var value = this.parentElement.querySelector(".verSelector-search-input").value;
         }
+
         var ops = this.parentElement.parentElement.parentElement,
             select = ops.getAttribute("data-name"),
             child = document.querySelector("[name='" + select + "']").querySelectorAll("option"),
@@ -139,7 +140,7 @@ window.verSelector = (function () {
         if (mobile) {
             parents.querySelector(".verSelector-focus").classList.add("verSelector-focus-show")
         }
-
+        parents.querySelector(".verSelector-search-input").value = "";
         items.classList.add("verSelector-focus-show");
 
         var _h = "";
