@@ -69,8 +69,8 @@ window.verSelector = (function () {
                 " </div>\n" +
                 " <div class=\"verSelector-option verSelector-two\"></div>\n" +
                 " <div class=\"verSelector-btns verSelector-two\">" +
-                " <button class=\"verSelector-success-button verSelector-btn verSelector-two\">保存</button>\n" +
-                " <button class=\"verSelector-error-button verSelector-btn verSelector-two\">取消</button> \n" +
+                " <button type='button' class=\"verSelector-success-button verSelector-btn verSelector-two\">保存</button>\n" +
+                " <button type='button' class=\"verSelector-error-button verSelector-btn verSelector-two\">取消</button> \n" +
                 "</div>\n" +
                 " </div>";
 
@@ -80,19 +80,35 @@ window.verSelector = (function () {
             html.querySelector(".verSelector-search-input").onkeyup = keyup_search;
             html.querySelector(".verSelector-search-button").onclick = keyup_search;
             html.querySelector(".verSelector-success-button").onclick = save_checks;
+            html.querySelector(".verSelector-error-button").onclick = reset_checks;
         });
+    };
+    //点击取消按钮
+    var reset_checks = function () {
+        var actives = this.parentElement.parentElement.querySelectorAll(".actives");
+        var parent = this.parentElement.parentElement.parentElement;
+        actives.forEach(function (active) {
+           active.classList.remove("actives");
+           var icon = active.querySelector(".verSelector-icon-check");
+           if(icon){
+               icon.classList.add("icon-check-box");
+               icon.classList.remove("icon-check-box-cicre");
+           }
+        });
+        parent.querySelector(".verSelector-focus").classList.remove("verSelector-focus-show");
+        parent.querySelector(".verSelector-items").classList.remove("verSelector-focus-show");
     };
     //点击保存按钮
     var save_checks = function () {
         var parent = this.parentElement.parentElement.parentElement,
             actives = this.parentElement.parentElement.querySelectorAll(".actives");
-        if(actives.length<1){
+        if (actives.length < 1) {
             alert("系统检测到您没有选择任何参数");
             this.parentElement.parentElement.classList.remove("verSelector-focus-show");
             return false;
         }
         var html = parent.querySelector(".verSelector-input-list");
-        if(!html){
+        if (!html) {
             html = document.createElement("div");
             html.className = "verSelector-input-list";
             parent.appendChild(html);
@@ -104,10 +120,10 @@ window.verSelector = (function () {
             text = [];
         actives.forEach(function (active) {
             text.push(active.innerText);
-            if(!checks){
-                _htm += '<input type="hidden" name="'+name+'" value="'+active.getAttribute("data-value")+'"/>';
-            }else{
-                _htm += '<input type="hidden" name="'+name+'[]" value="'+active.getAttribute("data-value")+'"/>';
+            if (!checks) {
+                _htm += '<input type="hidden" name="' + name + '" value="' + active.getAttribute("data-value") + '"/>';
+            } else {
+                _htm += '<input type="hidden" name="' + name + '[]" value="' + active.getAttribute("data-value") + '"/>';
             }
 
         });
@@ -159,10 +175,10 @@ window.verSelector = (function () {
             for (var i in text) {
                 var value = text[i].getAttribute("value");
                 var cl = "";
-                if(default_input_value){
-                    for(var k in default_input_value){
-                        if(value == default_input_value[k]){
-                            cl="actives";
+                if (default_input_value) {
+                    for (var k in default_input_value) {
+                        if (value == default_input_value[k]) {
+                            cl = "actives";
                             break;
                         }
                     }
@@ -177,7 +193,7 @@ window.verSelector = (function () {
                         icon = '<i class="verJsFont verSelector-icon-check ' + ic + '"></i>'
                     }
                 }
-                _h += '<p data-value="' + value + '" class="verSelector-option-value verSelector-two '+cl+'">' + icon + ' ' + text[i].innerText + '</p>'
+                _h += '<p data-value="' + value + '" class="verSelector-option-value verSelector-two ' + cl + '">' + icon + ' ' + text[i].innerText + '</p>'
             }
 
             options.innerHTML = _h;
