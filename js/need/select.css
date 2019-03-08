@@ -1,0 +1,144 @@
+@charset "UTF-8";
+*[data-selector] {
+    display: none;
+}
+
+.verSelector {
+    width: 220px;
+    padding: 10px;
+    background: #fff;
+    top: 0;
+    left: 0;
+    position: relative;
+}
+
+.verSelector .verSelector-box {
+    height: 35px;
+    line-height: 35px;
+    border: 1px solid #dedede;
+    padding: 0 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.verSelector .verSelector-box i {
+    float: right;
+}
+
+.verSelector .verSelector-search {
+    position: relative;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #dedede;
+}
+
+.verSelector .verSelector-items {
+    background: #fff;
+    border: 1px solid #dedede;
+    border-radius: 5px;
+    display: none;
+    width: 100%;
+    position: absolute;
+    z-index: 99999;
+}
+
+.verSelector .verSelector-search input {
+    border: 0;
+    outline: none;
+    padding: 0 10px;
+    line-height: 35px;
+    width: calc(100% - 40px);
+}
+
+.verSelector .verSelector-search i {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+
+.verSelector .verSelector-option {
+    max-height: 300px;
+    overflow: auto;
+    line-height: 30px;
+    border-top: 1px solid #dedede;
+    clear: both;
+}
+
+.verSelector .verSelector-option p {
+    cursor: pointer;
+    text-indent: 10px;
+    padding: 0;
+    margin: 0;
+}
+
+.verSelector .verSelector-option p:hover, .verSelector .verSelector-option p.actives {
+    color: #fff;
+    background: orangered;
+}
+
+.verSelector-focus {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .5);
+    display: none;
+    z-index: 666;
+}
+
+.verSelector-focus .icon-guanbi{
+    position: absolute;
+    top:0;
+    right: 0;
+}
+
+.verSelector-focus-show {
+    display: block !important;
+}
+.verSelector-icon-check{
+    color: #3d51d2;
+}
+.verSelector-btns{
+    height: 35px;
+    border-top: 1px solid #dedede;
+    line-height: 35px;
+    padding: 0 15px;
+}
+.verSelector-btn{
+    width: 60px;
+    height: 30px;
+    border: 0;
+    border-radius: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    outline: none;
+    float: right;
+    color: #fff;
+}
+.verSelector-success-button{
+    background: #0a8cd2;
+}
+.verSelector-error-button{
+    background: orangered;
+    margin-right: 5px;
+}
+@media screen and (max-width: 980px) {
+
+    .verSelector-items {
+        position: fixed !important;
+        width: 90vw !important;
+        height: 90vh;
+        top: 50%;
+        left: 50%;
+        margin-left: -45vw;
+        margin-top: -45vh;
+        border: 0;
+        overflow: hidden;
+    }
+
+    .verSelector .verSelector-option {
+        height: calc(100% - 90px) !important;
+        max-height: calc(100% - 90px) !important;
+    }
+}
