@@ -41,10 +41,12 @@ window.verSelector = (function () {
             //生成select表单
             var name = it.name,
                 checks = it.getAttribute("data-selector-checks");
+            it.setAttribute("data-name", name);
+            it.name = "";
             var html = document.createElement("div");
             html.className = "verSelector";
 
-            if (checks == "true") {
+            if (checks) {
                 html.setAttribute("data-selector-checks", true);
             }
 
@@ -77,12 +79,43 @@ window.verSelector = (function () {
             option();
             html.querySelector(".verSelector-search-input").onkeyup = keyup_search;
             html.querySelector(".verSelector-search-button").onclick = keyup_search;
-            html.querySelector(".verSelector-success-button").onclick = save_cheks;
+            html.querySelector(".verSelector-success-button").onclick = save_checks;
         });
     };
     //点击保存按钮
-    var save_cheks = function () {
+    var save_checks = function () {
+        var parent = this.parentElement.parentElement.parentElement,
+            actives = this.parentElement.parentElement.querySelectorAll(".actives");
+        if(actives.length<1){
+            alert("系统检测到您没有选择任何参数");
+            this.parentElement.parentElement.classList.remove("verSelector-focus-show");
+            return false;
+        }
+        var html = parent.querySelector(".verSelector-input-list");
+        if(!html){
+            html = document.createElement("div");
+            html.className = "verSelector-input-list";
+            parent.appendChild(html);
+        }
 
+        var _htm = "";
+        var name = parent.getAttribute("data-name"),
+            checks = parent.getAttribute("data-selector-checks"),
+            text = [];
+        actives.forEach(function (active) {
+            text.push(active.innerText);
+            if(!checks){
+                _htm += '<input type="hidden" name="'+name+'" value="'+active.getAttribute("data-value")+'"/>';
+            }else{
+                _htm += '<input type="hidden" name="'+name+'[]" value="'+active.getAttribute("data-value")+'"/>';
+            }
+
+        });
+        text = text.join(",");
+        parent.querySelector(".verSelector-text").innerText = text;
+        html.innerHTML = _htm;
+        parent.querySelector(".verSelector-focus").classList.remove("verSelector-focus-show");
+        parent.querySelector(".verSelector-items").classList.remove("verSelector-focus-show");
     };
     //搜索关键字查询
     var keyup_search = function () {
@@ -94,16 +127,26 @@ window.verSelector = (function () {
 
         var ops = this.parentElement.parentElement.parentElement,
             select = ops.getAttribute("data-name"),
-            child = document.querySelector("[name='" + select + "']").querySelectorAll("option"),
+            child = document.querySelector("[data-name='" + select + "']").querySelectorAll("option"),
             options = this.parentElement.nextElementSibling,
             text = [],
+            default_input_value = [],
             check = ops.getAttribute("data-selector-checks");
         if (value == "") {
             show_options(this.parentElement.parentElement);
             return false;
         }
 
-
+        // ops.querySelector(".verSelector-search-input").value = "";
+        var defa_input = ops.querySelector(".verSelector-input-list");
+        if (defa_input) {
+            defa_input = defa_input.querySelectorAll("input");
+            if (defa_input) {
+                defa_input.forEach(function (ims) {
+                    default_input_value.push(ims.value);
+                });
+            }
+        }
         child.forEach(function (ite) {
             if (ite.innerText.indexOf(value) >= 0) {
                 text.push(ite);
@@ -114,33 +157,57 @@ window.verSelector = (function () {
         } else {
             var _h = "";
             for (var i in text) {
+                var value = text[i].getAttribute("value");
+                var cl = "";
+                if(default_input_value){
+                    for(var k in default_input_value){
+                        if(value == default_input_value[k]){
+                            cl="actives";
+                            break;
+                        }
+                    }
+                }
                 var icon = "";
                 if (check == "true") {
-                    icon = '<i class="verJsFont icon-check-box"></i>'
+                    var ic = "icon-check-box";
+                    if (cl) {
+                        ic = "icon-check-box-cicre";
+                    }
+                    if (value != "") {
+                        icon = '<i class="verJsFont verSelector-icon-check ' + ic + '"></i>'
+                    }
                 }
-                var value = text[i].getAttribute("value");
-                _h += '<p data-value="' + value + '" class="verSelector-option-value verSelector-two">' + icon + ' ' + text[i].innerText + '</p>'
+                _h += '<p data-value="' + value + '" class="verSelector-option-value verSelector-two '+cl+'">' + icon + ' ' + text[i].innerText + '</p>'
             }
 
             options.innerHTML = _h;
         }
-
-        _option();
+        _option(check);
     };
     //显示选择列表
     var show_options = function (tar) {
         var parents = tar.parentNode,
             select = parents.getAttribute("data-name"),
-            option = document.querySelector("[name=" + select + "]"),
+            option = document.querySelector("[data-name=" + select + "]"),
             items = parents.querySelector(".verSelector-items"),
             options = option.querySelectorAll("option"),
             check = parents.getAttribute("data-selector-checks"),
             mobile = isMobile(),
+            default_input_value = [],
             ops = items.querySelector(".verSelector-option");
         if (mobile) {
             parents.querySelector(".verSelector-focus").classList.add("verSelector-focus-show")
         }
         parents.querySelector(".verSelector-search-input").value = "";
+        var defa_input = parents.querySelector(".verSelector-input-list");
+        if (defa_input) {
+            defa_input = defa_input.querySelectorAll("input");
+            if (defa_input) {
+                defa_input.forEach(function (ims) {
+                    default_input_value.push(ims.value);
+                });
+            }
+        }
         items.classList.add("verSelector-focus-show");
 
         var _h = "";
@@ -148,10 +215,15 @@ window.verSelector = (function () {
             var cl = "";
             var icon = "";
             var value = i.getAttribute("value");
-            if (i.selected) {
-                cl = "actives";
+            if (default_input_value) {
+                for (var j in default_input_value) {
+                    if (value == default_input_value[j]) {
+                        cl = "actives";
+                        break;
+                    }
+                }
             }
-            if (check == "true") {
+            if (check) {
                 var ic = "icon-check-box";
                 if (cl) {
                     ic = "icon-check-box-cicre";
@@ -165,7 +237,7 @@ window.verSelector = (function () {
             }
         });
         ops.innerHTML = _h;
-        _option();
+        _option(check);
     };
     //相关操作信息
     var option = function () {
@@ -206,11 +278,39 @@ window.verSelector = (function () {
         }
     };
     //选中某一项条件
-    var _option = function () {
+    var _option = function (checks) {
         var options = document.querySelectorAll(".verSelector-option-value");
         options.forEach(function (items) {
             items.onclick = function () {
+                var text = this.innerText,
+                    value = this.getAttribute("data-value");
+                if (!checks) {
+                    this.classList.add("actives");
+                    var parent = this.parentElement.parentElement.parentElement,
+                        name = parent.getAttribute("data-name");
+                    options.forEach(function (ic) {
+                        if (ic.innerText != text) {
+                            ic.classList.remove("actives");
+                        }
+                    });
+                    //查找select，生成选中数据
+                    var html = parent.querySelector(".verSelector-input-list");
+                    if (!html) {
+                        var html = document.createElement("div");
+                        html.classList = "verSelector-input-list";
+                        parent.appendChild(html);
+                    }
 
+                    var input = '<input name="' + name + '" value="' + value + '" type="hidden"/>';
+                    html.innerHTML = input;
+                    parent.querySelector(".verSelector-text").innerText = text;
+                    parent.querySelector(".verSelector-focus").classList.remove("verSelector-focus-show");
+                    parent.querySelector(".verSelector-items").classList.remove("verSelector-focus-show");
+                } else {
+                    this.querySelector(".verSelector-icon-check").classList.toggle("icon-check-box");
+                    this.querySelector(".verSelector-icon-check").classList.toggle("icon-check-box-cicre");
+                    this.classList.toggle("actives");
+                }
             }
         })
     };
