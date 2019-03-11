@@ -20,7 +20,13 @@
     margin-bottom: 10px;
     cursor: pointer;
 }
-
+.verSelector .verSelector-text{
+    display: inline-block;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    width: calc(100% - 35px);
+}
 .verSelector .verSelector-box i {
     float: right;
 }
@@ -87,9 +93,9 @@
     z-index: 666;
 }
 
-.verSelector-focus .icon-guanbi{
+.verSelector-focus .icon-guanbi {
     position: absolute;
-    top:0;
+    top: 0;
     right: 0;
 }
 
@@ -97,13 +103,14 @@
     display: block !important;
 }
 
-.verSelector-btns{
+.verSelector-btns {
     height: 35px;
     border-top: 1px solid #dedede;
     line-height: 35px;
     padding: 0 15px;
 }
-.verSelector-btn{
+
+.verSelector-btn {
     width: 60px;
     height: 30px;
     border: 0;
@@ -114,13 +121,20 @@
     float: right;
     color: #fff;
 }
-.verSelector-success-button{
+
+.verSelector-success-button {
     background: #0a8cd2;
 }
-.verSelector-error-button{
+
+.verSelector-error-button {
     background: orangered;
     margin-right: 5px;
 }
+
+.verSelector-input-list {
+    display: none;
+}
+
 @media screen and (max-width: 980px) {
 
     .verSelector-items {
