@@ -255,7 +255,7 @@ window.verSelector = (function () {
                 }
                 var parent = target.parentElement;
                 item.forEach(function (itm) {
-                    if(itm.parentElement != parent){
+                    if (itm.parentElement != parent) {
                         itm.classList.remove("verSelector-focus-show");
                     }
                 });
@@ -270,7 +270,19 @@ window.verSelector = (function () {
             } else {
                 item.forEach(function (itm) {
                     if (itm.classList.contains("verSelector-focus-show")) {
-                        itm.classList.remove("verSelector-focus-show")
+                        itm.classList.remove("verSelector-focus-show");
+                        //判断是否有选中的值？
+                        var inputs = itm.parentElement.querySelector(".verSelector-input-list").querySelectorAll("input[type='hidden']");
+                        if(inputs.length){
+                            var txt = [];
+                            inputs.forEach(function (input) {
+                                txt.push(input.getAttribute("data-name"));
+                            });
+                            txt = txt.join(",");
+                            itm.parentElement.querySelector(".verSelector-text").innerText = txt;
+                        } else {
+                            itm.parentElement.querySelector(".verSelector-text").innerText = "请选择";
+                        }
                     }
                 });
                 if (isMobile()) {
