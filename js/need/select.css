@@ -142,7 +142,9 @@
 .verSelector-input-list {
     display: none;
 }
-
+.verSelector-caret{
+    font-size: 12px !important;
+}
 @media screen and (max-width: 1024px) {
 
     .verSelector-items {

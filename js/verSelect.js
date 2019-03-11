@@ -106,6 +106,7 @@ window.verSelector = (function () {
         if (actives.length < 1) {
             alert("系统检测到您没有选择任何参数");
             this.parentElement.parentElement.classList.remove("verSelector-focus-show");
+            parent.querySelector(".verSelector-focus").classList.remove("verSelector-focus-show");
             return false;
         }
         var html = parent.querySelector(".verSelector-input-list"),
@@ -197,8 +198,10 @@ window.verSelector = (function () {
             default_input_value = [],
             ops = items.querySelector(".verSelector-option");
         if (mobile) {
-            parents.querySelector(".verSelector-focus").classList.add("verSelector-focus-show")
+            parents.querySelector(".verSelector-focus").classList.toggle("verSelector-focus-show")
         }
+        items.classList.toggle("verSelector-focus-show");
+        if (!items.classList.contains("verSelector-focus-show")) return false;
         parents.querySelector(".verSelector-search-input").value = "";
         var defa_input = parents.querySelector(".verSelector-input-list");
         if (defa_input) {
@@ -209,7 +212,6 @@ window.verSelector = (function () {
                 });
             }
         }
-        items.classList.add("verSelector-focus-show");
 
         var _h = "";
         options.forEach(function (i) {
@@ -248,8 +250,12 @@ window.verSelector = (function () {
             var target = e.target;
             //判断是否是下拉选框点击时间
             if (target.classList.contains("verSelector-one")) {
+                if (target.classList.contains("verSelector-text") || target.classList.contains("verSelector-caret")) {
+                    target = target.parentElement;
+                }
+                var parent = target.parentElement;
                 item.forEach(function (itm) {
-                    if (itm.classList.contains("verSelector-focus-show")) {
+                    if(itm.parentElement != parent){
                         itm.classList.remove("verSelector-focus-show");
                     }
                 });
@@ -257,9 +263,6 @@ window.verSelector = (function () {
                     focus.forEach(function (itm) {
                         itm.classList.remove("verSelector-focus-show");
                     })
-                }
-                if (target.classList.contains("verSelector-text") || target.classList.contains("verSelector-caret")) {
-                    target = target.parentElement;
                 }
                 show_options(target);
             } else if (target.classList.contains("verSelector-two")) {
@@ -321,7 +324,7 @@ window.verSelector = (function () {
                     }
                 }
             }
-        })
+        });
     };
     //在某一元素之后追加元素
     var insertAfter = function (item, afters) {
