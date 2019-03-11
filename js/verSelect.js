@@ -70,15 +70,15 @@ window.verSelector = (function () {
                 " <i class=\"verSelector-search-button verJsFont icon-search verSelector-two\"></i>\n" +
                 " </div>\n" +
                 " <div class=\"verSelector-option verSelector-two\"></div>\n" +
-                 btn +
-                " </div>";
+                btn +
+                " </div>\n" + "<div class='verSelector-input-list'></div>";
 
             html.innerHTML = _html;
             insertAfter(html, it);
             option();
             html.querySelector(".verSelector-search-input").onkeyup = keyup_search;
             html.querySelector(".verSelector-search-button").onclick = keyup_search;
-            if(checks){
+            if (checks) {
                 html.querySelector(".verSelector-success-button").onclick = save_checks;
                 html.querySelector(".verSelector-error-button").onclick = reset_checks;
             }
@@ -89,12 +89,12 @@ window.verSelector = (function () {
         var actives = this.parentElement.parentElement.querySelectorAll(".actives");
         var parent = this.parentElement.parentElement.parentElement;
         actives.forEach(function (active) {
-           active.classList.remove("actives");
-           var icon = active.querySelector(".verSelector-icon-check");
-           if(icon){
-               icon.classList.add("icon-check-box");
-               icon.classList.remove("icon-check-box-cicre");
-           }
+            active.classList.remove("actives");
+            var icon = active.querySelector(".verSelector-icon-check");
+            if (icon) {
+                icon.classList.add("icon-check-box");
+                icon.classList.remove("icon-check-box-cicre");
+            }
         });
         parent.querySelector(".verSelector-focus").classList.remove("verSelector-focus-show");
         parent.querySelector(".verSelector-items").classList.remove("verSelector-focus-show");
@@ -108,29 +108,14 @@ window.verSelector = (function () {
             this.parentElement.parentElement.classList.remove("verSelector-focus-show");
             return false;
         }
-        var html = parent.querySelector(".verSelector-input-list");
-        if (!html) {
-            html = document.createElement("div");
-            html.className = "verSelector-input-list";
-            parent.appendChild(html);
-        }
-
-        var _htm = "";
-        var name = parent.getAttribute("data-name"),
-            checks = parent.getAttribute("data-selector-checks"),
+        var html = parent.querySelector(".verSelector-input-list"),
+            _h = html.querySelectorAll("input[type='hidden']"),
             text = [];
-        actives.forEach(function (active) {
-            text.push(active.innerText);
-            if (!checks) {
-                _htm += '<input type="hidden" name="' + name + '" value="' + active.getAttribute("data-value") + '"/>';
-            } else {
-                _htm += '<input type="hidden" name="' + name + '[]" value="' + active.getAttribute("data-value") + '"/>';
-            }
-
+        _h.forEach(function (its) {
+            text.push(its.getAttribute("data-name"));
         });
         text = text.join(",");
         parent.querySelector(".verSelector-text").innerText = text;
-        html.innerHTML = _htm;
         parent.querySelector(".verSelector-focus").classList.remove("verSelector-focus-show");
         parent.querySelector(".verSelector-items").classList.remove("verSelector-focus-show");
     };
@@ -154,7 +139,6 @@ window.verSelector = (function () {
             return false;
         }
 
-        // ops.querySelector(".verSelector-search-input").value = "";
         var defa_input = ops.querySelector(".verSelector-input-list");
         if (defa_input) {
             defa_input = defa_input.querySelectorAll("input");
@@ -312,13 +296,7 @@ window.verSelector = (function () {
                     });
                     //查找select，生成选中数据
                     var html = parent.querySelector(".verSelector-input-list");
-                    if (!html) {
-                        var html = document.createElement("div");
-                        html.classList = "verSelector-input-list";
-                        parent.appendChild(html);
-                    }
-
-                    var input = '<input name="' + name + '" value="' + value + '" type="hidden"/>';
+                    var input = '<input name="' + name + '" value="' + value + '" type="hidden" data-name="' + this.innerText + '"/>';
                     html.innerHTML = input;
                     parent.querySelector(".verSelector-text").innerText = text;
                     parent.querySelector(".verSelector-focus").classList.remove("verSelector-focus-show");
@@ -327,6 +305,20 @@ window.verSelector = (function () {
                     this.querySelector(".verSelector-icon-check").classList.toggle("icon-check-box");
                     this.querySelector(".verSelector-icon-check").classList.toggle("icon-check-box-cicre");
                     this.classList.toggle("actives");
+                    var parent = this.parentElement.parentElement.parentElement,
+                        name = parent.getAttribute("data-name");
+                    var html = parent.querySelector(".verSelector-input-list");
+                    if (this.querySelector(".verSelector-icon-check").classList.contains("icon-check-box-cicre")) {
+                        var _h = document.createElement("input");
+                        _h.type = "hidden";
+                        _h.name = name + "[]";
+                        _h.setAttribute("data-name", this.innerText);
+                        _h.value = value;
+                        html.appendChild(_h);
+                    } else {
+                        var el = html.querySelector("[data-name='" + this.innerText + "']");
+                        html.removeChild(el);
+                    }
                 }
             }
         })

@@ -4,31 +4,33 @@
 }
 
 .verSelector {
-    width: 220px;
-    padding: 10px;
-    background: #fff;
+    width: 180px;
     top: 0;
     left: 0;
     position: relative;
+    display: inline-block;
 }
 
 .verSelector .verSelector-box {
-    height: 35px;
-    line-height: 35px;
+    height: 30px;
+    line-height: 30px;
     border: 1px solid #dedede;
     padding: 0 10px;
-    margin-bottom: 10px;
     cursor: pointer;
+    margin-bottom: 5px;
 }
-.verSelector .verSelector-text{
+
+.verSelector .verSelector-text {
     display: inline-block;
     overflow: hidden;
-    text-overflow:ellipsis;
+    text-overflow: ellipsis;
     white-space: nowrap;
-    width: calc(100% - 35px);
+    width: calc(100% - 30px);
 }
+
 .verSelector .verSelector-box i {
     float: right;
+    line-height: 30px;
 }
 
 .verSelector .verSelector-search {
@@ -42,17 +44,19 @@
     border: 1px solid #dedede;
     border-radius: 5px;
     display: none;
-    width: 100%;
+    width: 110%;
     position: absolute;
     z-index: 99999;
 }
 
 .verSelector .verSelector-search input {
     border: 0;
-    outline: none;
-    padding: 0 10px;
-    line-height: 35px;
-    width: calc(100% - 40px);
+    outline: #dedede !important;
+    padding: 0 10px !important;
+    line-height: 30px !important;
+    height: 30px !important;
+    width: calc(100% - 40px) !important;
+    margin: 0;
 }
 
 .verSelector .verSelector-search i {
@@ -68,13 +72,17 @@
     line-height: 30px;
     border-top: 1px solid #dedede;
     clear: both;
+    background: #fff;
 }
 
 .verSelector .verSelector-option p {
     cursor: pointer;
-    text-indent: 10px;
-    padding: 0;
+    /*text-indent: 10px;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     margin: 0;
+    padding: 0 10px;
 }
 
 .verSelector .verSelector-option p:hover, .verSelector .verSelector-option p.actives {
@@ -128,14 +136,14 @@
 
 .verSelector-error-button {
     background: orangered;
-    margin-right: 5px;
+    margin-right: 5px !important;
 }
 
 .verSelector-input-list {
     display: none;
 }
 
-@media screen and (max-width: 980px) {
+@media screen and (max-width: 1024px) {
 
     .verSelector-items {
         position: fixed !important;
