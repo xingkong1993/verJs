@@ -45,7 +45,11 @@ window.verSelector = (function () {
             it.name = "";
             var html = document.createElement("div");
             html.className = "verSelector";
+<<<<<<< HEAD
             var btn = ''
+=======
+
+>>>>>>> 84e40a3e2c2a5c63bbe573ae823ce8474b0cd48f
             if (checks) {
                 html.setAttribute("data-selector-checks", true);
                 btn = " <div class=\"verSelector-btns verSelector-two\"><button type='button' class=\"verSelector-success-button verSelector-btn verSelector-two\">保存</button>\n" +
@@ -70,7 +74,14 @@ window.verSelector = (function () {
                 " <i class=\"verSelector-search-button verJsFont icon-search verSelector-two\"></i>\n" +
                 " </div>\n" +
                 " <div class=\"verSelector-option verSelector-two\"></div>\n" +
+<<<<<<< HEAD
                  btn +
+=======
+                " <div class=\"verSelector-btns verSelector-two\">" +
+                " <button type='button' class=\"verSelector-success-button verSelector-btn verSelector-two\">保存</button>\n" +
+                " <button type='button' class=\"verSelector-error-button verSelector-btn verSelector-two\">取消</button> \n" +
+                "</div>\n" +
+>>>>>>> 84e40a3e2c2a5c63bbe573ae823ce8474b0cd48f
                 " </div>";
 
             html.innerHTML = _html;
@@ -78,11 +89,31 @@ window.verSelector = (function () {
             option();
             html.querySelector(".verSelector-search-input").onkeyup = keyup_search;
             html.querySelector(".verSelector-search-button").onclick = keyup_search;
+<<<<<<< HEAD
             if(checks){
                 html.querySelector(".verSelector-success-button").onclick = save_checks;
                 html.querySelector(".verSelector-error-button").onclick = reset_checks;
             }
         });
+    };
+    //点击取消按钮
+    var reset_checks = function () {
+        var actives = this.parentElement.parentElement.querySelectorAll(".actives");
+        var parent = this.parentElement.parentElement.parentElement;
+        actives.forEach(function (active) {
+           active.classList.remove("actives");
+           var icon = active.querySelector(".verSelector-icon-check");
+           if(icon){
+               icon.classList.add("icon-check-box");
+               icon.classList.remove("icon-check-box-cicre");
+           }
+=======
+            html.querySelector(".verSelector-success-button").onclick = save_checks;
+            html.querySelector(".verSelector-error-button").onclick = reset_checks;
+>>>>>>> 84e40a3e2c2a5c63bbe573ae823ce8474b0cd48f
+        });
+        parent.querySelector(".verSelector-focus").classList.remove("verSelector-focus-show");
+        parent.querySelector(".verSelector-items").classList.remove("verSelector-focus-show");
     };
     //点击取消按钮
     var reset_checks = function () {
@@ -114,6 +145,7 @@ window.verSelector = (function () {
             html.className = "verSelector-input-list";
             parent.appendChild(html);
         }
+<<<<<<< HEAD
 
         var _htm = "";
         var name = parent.getAttribute("data-name"),
@@ -127,6 +159,21 @@ window.verSelector = (function () {
                 _htm += '<input type="hidden" name="' + name + '[]" value="' + active.getAttribute("data-value") + '"/>';
             }
 
+=======
+
+        var _htm = "";
+        var name = parent.getAttribute("data-name"),
+            checks = parent.getAttribute("data-selector-checks"),
+            text = [];
+        actives.forEach(function (active) {
+            text.push(active.innerText);
+            if (!checks) {
+                _htm += '<input type="hidden" name="' + name + '" value="' + active.getAttribute("data-value") + '"/>';
+            } else {
+                _htm += '<input type="hidden" name="' + name + '[]" value="' + active.getAttribute("data-value") + '"/>';
+            }
+
+>>>>>>> 84e40a3e2c2a5c63bbe573ae823ce8474b0cd48f
         });
         text = text.join(",");
         parent.querySelector(".verSelector-text").innerText = text;
