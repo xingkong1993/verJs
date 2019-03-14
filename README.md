@@ -1,8 +1,8 @@
-VERJS
-===============
- # 一、使用须知：
+#### VERJS
+
+#### 一、使用须知：
  verjs是一款原生js代码编写的表单验证插件，提供了常用的10种表单验证方式，包括身份证号码验证、手机电话号码、电子邮箱验证、必填字段验证、正则自定义验证、多次对比验证、最大值/最小值验证……，后续功能正在开发中敬请期待
- # 二、方法介绍
+#### 二、方法介绍
  使用verJs.js只需在js中new一个既可以使用，如下面实例：
  ~~~
  new VerJs({
@@ -79,7 +79,7 @@ VERJS
    >success : 数据请求成功后的回调函数（验证通过并成功返回请求信息）
    >
    >fail : 数据请求失败后的回调函数（验证通过并未返回请求信息）   
- # 三、属性说明
+#### 三、属性说明
  1. 必填参数【data-required="当前参数不能为空"】
  2. 最小参数【data-min="1"】
  3. 最大参数【data-max="1"】
@@ -91,18 +91,8 @@ VERJS
  9. 邮箱验证【data-email="true"】
  10. 身份证号码验证【data-idcard="true"】
  11. 表单提交方式 【data-form='ajax'】 
- # 四、文件目录结构
- ~~~
- www 网站部署目录
- |——verJs  verjs文件夹
- |————need  样式文件夹
- |——————common.css  verjs基础样式
- |——————vericon.css icon样式
- |————verJs.js  verJS文件
- |————verApi.js verapi接口调用文件
- |————verSelectList.js  select下拉选框
- |————verTabList.js 复选
- ~~~
- # 版权信息
+#### 四、实例
+[表单验证](https://www.xincheng-blog.cn/ver.form.html)
+#### 版权信息
  > Copyright © 2018 by [搬砖的小白](https://www.xincheng-blog.cn)  
  > All rights reserved。
