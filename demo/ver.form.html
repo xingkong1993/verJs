@@ -37,7 +37,7 @@
     </style>
 </head>
 <body>
-<form action="#" id="form">
+<form action="#" id="form" data-form="ajax">
     <fieldset>
         <div>form表单验证</div>
         <dl>
@@ -93,7 +93,7 @@
     </fieldset>
 </form>
 </body>
-<script src="../js/verJs.js"></script>
+<script src="../verJs/verJs.js"></script>
 <script src="asset/js/jquery.min.js"></script>
 <script>
     function max_width() {
@@ -104,9 +104,14 @@
         $("dt").width(max);
     }
     max_width();
-    var form = new VerJs();
-    form.init({
-        form:"#form"
+    new VerJs({
+        form:"#form",
+        success:function (d) {
+            alert(1)
+        },
+        fail:function (d) {
+            alert(2)
+        }
     });
 </script>
 </html>
