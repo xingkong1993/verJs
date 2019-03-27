@@ -275,9 +275,9 @@ window.VerJs = (function () {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", form.action, true);
         xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
         var data = formData();
-        data = JSON.stringify(data);
+        // data = JSON.stringify(data);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4) {
                 if (xhr.status == 203) {
@@ -294,38 +294,40 @@ window.VerJs = (function () {
     //组合发送数据
     var formData = function () {
         try {
-            var ele = {},
+            var ele = [],
                 inputs = form.querySelectorAll("input"),
                 select = form.querySelectorAll("select"),
                 text = form.querySelectorAll("textarea");
             if (inputs.length > 0) {
-                [].forEach.call(inputs, function (items) {
-                    var type = items.type.toLowerCase();
-                    if (type !== 'checkbox' && type != "radio" && type != "submit" && type != "button" && type != "reset") {
-                        // value = items.name + "=" + items.value;
-                        ele[items.name] = items.value;
-                    } else if (type == "radio" && items.checked) {
-                        ele[items.name] = items.value;
-                    } else if (type == "checkbox" && items.checked) {
-                        if(ele[items.name]) {ele[items.name].push(items.value)}
-                        else {ele[items.name]=[items.value]}
+                inputs.forEach(function (items) {
+                    // ele.push(items);
+                    var type = items.type.toLowerCase(),
+                        value = "";
+                    if (type !== 'checkbox' && type != "radio") {
+                        value = items.name + "=" + items.value;
+                    } else {
+                        if (items.checked) {
+                            value = items.name + "=" + items.value;
+                        }
+                    }
+                    if (value) {
+                        ele.push(value);
                     }
                 });
             }
 
             if (select.length > 0) {
-                [].forEach.call(select, function (items) {
-
-                    ele[items.name] = items.value;
+                select.forEach(function (items) {
+                    ele.push(items.name + "=" + items.value);
                 })
             }
 
             if (text.length > 0) {
-                [].forEach.call(text, function (items) {
-                    ele[items.name] = items.value;
+                text.forEach(function (items) {
+                    ele.push(items.name + "=" + items.value);
                 })
             }
-            return ele;
+            return (ele.join("&"));
         } catch (e) {
             console.log(e);
         }
