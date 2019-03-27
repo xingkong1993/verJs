@@ -20,10 +20,10 @@ window.VerJs = (function () {
     };
     var change;
     var vers = function (param) {
-        if(!ie()){
+        if (!ie()) {
             fail(function (d) {
                 alert(d);
-            },"不支持的浏览器插件");
+            }, "不支持的浏览器插件");
             return false;
         }
         props;
@@ -275,7 +275,9 @@ window.VerJs = (function () {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", form.action, true);
         xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         var data = formData();
+        data = JSON.stringify(data);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4) {
                 if (xhr.status == 203) {
@@ -291,39 +293,43 @@ window.VerJs = (function () {
     };
     //组合发送数据
     var formData = function () {
-        var ele = [],
-            inputs = form.querySelectorAll("input"),
-            select = form.querySelectorAll("select"),
-            text = form.querySelectorAll("textarea");
-        if (inputs.length > 0) {
-            [].forEach.call(inputs,function (items) {
-                var type = items.type.toLowerCase(),
-                    value = "";
-                if (type !== 'checkbox' && type != "radio") {
-                    value = items.name + "=" + items.value;
-                } else {
-                    if (items.checked) {
-                        value = items.name + "=" + items.value;
+        try {
+            var ele = {},
+                inputs = form.querySelectorAll("input"),
+                select = form.querySelectorAll("select"),
+                text = form.querySelectorAll("textarea");
+            if (inputs.length > 0) {
+                [].forEach.call(inputs, function (items) {
+                    var type = items.type.toLowerCase();
+                    if (type !== 'checkbox' && type != "radio" && type != "submit" && type != "button" && type != "reset") {
+                        // value = items.name + "=" + items.value;
+                        ele[items.name] = items.value;
+                    } else if (type == "radio" && items.checked) {
+                        ele[items.name] = items.value;
+                    } else if (type == "checkbox" && items.checked) {
+                        if(ele[items.name]) {ele[items.name].push(items.value)}
+                        else {ele[items.name]=[items.value]}
                     }
-                }
-                if (value) {
-                    ele.push(value);
-                }
-            });
+                });
+            }
+
+            if (select.length > 0) {
+                [].forEach.call(select, function (items) {
+
+                    ele[items.name] = items.value;
+                })
+            }
+
+            if (text.length > 0) {
+                [].forEach.call(text, function (items) {
+                    ele[items.name] = items.value;
+                })
+            }
+            return ele;
+        } catch (e) {
+            console.log(e);
         }
 
-        if (select.length > 0) {
-            [].forEach.call(select,function (items) {
-                ele.push(items.name + "=" + items.value);
-            })
-        }
-
-        if (text.length > 0) {
-            [].forEach.call(text,function (items) {
-                ele.push(items.name + "=" + items.value);
-            })
-        }
-        return encodeURI(ele.join("&"));
     };
     //取消提交
     var rests = function () {
@@ -331,7 +337,7 @@ window.VerJs = (function () {
         for (var i in MESSAGE) {
             var names = form.querySelectorAll("[data-" + i + "]");
             if (names.length > 0) {
-                [].forEach.call(names,function (items) {
+                [].forEach.call(names, function (items) {
                     clear_error(items);
                 })
             }
@@ -342,7 +348,7 @@ window.VerJs = (function () {
         for (var i in MESSAGE) {
             var names = form.querySelectorAll("[data-" + i + "]");
             if (names.length > 0) {
-                [].forEach.call(names,function (items) {
+                [].forEach.call(names, function (items) {
                     query(items);
                 })
             }
