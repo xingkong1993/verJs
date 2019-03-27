@@ -275,9 +275,7 @@ window.VerJs = (function () {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", form.action, true);
         xhr.setRequestHeader("x-requested-with", "XMLHttpRequest");
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-        var data = formData();
-        // data = JSON.stringify(data);
+        var data = new FormData(form);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4) {
                 if (xhr.status == 203) {
@@ -291,48 +289,7 @@ window.VerJs = (function () {
         };
         xhr.send(data);
     };
-    //组合发送数据
-    var formData = function () {
-        try {
-            var ele = [],
-                inputs = form.querySelectorAll("input"),
-                select = form.querySelectorAll("select"),
-                text = form.querySelectorAll("textarea");
-            if (inputs.length > 0) {
-                inputs.forEach(function (items) {
-                    // ele.push(items);
-                    var type = items.type.toLowerCase(),
-                        value = "";
-                    if (type !== 'checkbox' && type != "radio") {
-                        value = items.name + "=" + items.value;
-                    } else {
-                        if (items.checked) {
-                            value = items.name + "=" + items.value;
-                        }
-                    }
-                    if (value) {
-                        ele.push(value);
-                    }
-                });
-            }
 
-            if (select.length > 0) {
-                select.forEach(function (items) {
-                    ele.push(items.name + "=" + items.value);
-                })
-            }
-
-            if (text.length > 0) {
-                text.forEach(function (items) {
-                    ele.push(items.name + "=" + items.value);
-                })
-            }
-            return (ele.join("&"));
-        } catch (e) {
-            console.log(e);
-        }
-
-    };
     //取消提交
     var rests = function () {
         form.reset();
