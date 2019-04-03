@@ -92,7 +92,7 @@
  10. 身份证号码验证【data-idcard="true"】
  11. 表单提交方式 【data-form='ajax'】 
 #### 四、实例
-[表单验证](https://www.xincheng-blog.cn/ver.form.html)
+[表单验证](https://www.xincheng-blog.cn/details.html?id=20190402IBEltJcvSM)
 #### 版权信息
  > Copyright © 2018 by [搬砖的小白](https://www.xincheng-blog.cn)  
  > All rights reserved。
